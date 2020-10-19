@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- <demo></demo> -->
+        <!-- <demo></demo> -->
+        <demo2 :title="10" content="专业的开发者社区"></demo2>
+        <demo2 title="CSDN学员" content="专业的开发者社区" @parentevent="fn">
+            <input type="text">
+            <button>click</button>
+        </demo2>
+
+    </div>
+    <template id="temp">
+        <div>
+            <h2>{{title}}</h2>
+            <div>
+                {{content}}
+                <slot></slot>
+                <hr>
+                <button @click="clickHandle">点击</button>
+            </div>
+        </div>
+    </template>
+    <script src="vue.js"></script>
+    <script>
+        // // 全局注册
+        // Vue.component('demo', {
+        //     // 定义组件模板
+        //     template: "<h1>{{msg}}</h1>",
+        //     //组件开发中，data只能是函数，通过在函数中return对象
+        //     //如果是data对象，那么复用组件实例都指向一个data对象，一个值改变了，其他的也会被影响被改变
+        //     //而如果定义成函数的形式，每次复用都会返回独立拷贝的对象不会影响其他实例
+        //     data() {
+        //         return {
+        //             msg: "我是组件1"
+        //         }
+        //     }
+        // })
+        // new Vue({
+        //     el: "#app",
+        //     data: {
+
+        //     },
+        //     //局部组件,作用域是id为app内的所有元素都可复用
+        //     components: {
+        //         "demo2": {
+        //             template: "<h1>我是组件2：局部</h1>"
+        //         }
+        //     }
+        // })
+        new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+                //参数名随便
+              fn(msg) {
+                  console.log(msg)
+              }  
+            },
+            components: {
+                "demo2": {
+                    template: "#temp",
+                    //声明传过来的参数
+                    // props: ["title","content"]
+                    //验证还有required\default看文档
+                    props: {
+                        title: String,
+                        content: String
+                    },
+                    methods: {
+                        clickHandle() {
+                            //$emit,第一个参数是父组件定义的事件名，第二个参数是要传的数据,注意html元素是不区分大小写的
+                            this.$emit('parentevent','我是子组件');
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

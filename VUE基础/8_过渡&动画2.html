@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js钩子函数</title>
+    <style>
+        #ball {
+            width: 50px;
+            height: 50px;
+            background: #ff0000;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click="isShow = !isShow">click</button>
+        <!-- @before-leave="beforeLeave" @leave="leave
+        @after-leave="afterLeave" -->
+        <transition @before-enter="beforeEnter" @enter="enter"
+            @after-enter="afterEnter"
+        
+            
+        >
+            <div id="ball" v-show="isShow">
+
+            </div>
+        </transition>
+        
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                isShow: false
+            },
+            methods: {
+                //两个都写，可能会无限循环，慎用内联表达式
+                //el可以取到小球
+                beforeEnter(el) {
+                    el.style.transform = "translate(0,0)"
+                },
+                //不回掉的话会立即完成
+                enter(el,done) {
+                    el.offsetWidth;//强制刷新动画，避免不出动画
+                    el.style.transform = "translate(150px,450px)"//水平位移150
+                    el.style.transition = "all 1s ease"//1秒动画
+                    done()//回调，不会调用？讲师写的是不回掉的话不会消失，否则会当作同步调用，过渡立即完成
+                },
+                afterEnter() {
+                    this.isShow = !this.isShow
+                },
+                // beforeLeave(el) {
+                //     el.style.transform = "translate(0,0)"
+                // },
+                // leave(el,done) {
+                //     el.offsetWidth;
+                //     el.style.transform = "translate(150px,450px)"
+                //     el.style.transition = "all 1s ease"
+                //     done()
+                // },
+                // afterLeave() {
+                //     this.isShow = !this.isShow
+                // }
+            }
+        })
+    </script>
+</body>
+</html>

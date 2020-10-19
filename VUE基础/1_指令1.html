@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .a {
+            background-color: red;
+        }
+        .b {
+            border: 5px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        {{ msg }}
+        {{count+1}}
+        {{isOk?"ok":"no"}}
+        <div v-html="msg"></div>
+        <h2 v-bind:class="classA">CSDN</h2>
+        <h2 :class="{'a':isA, 'b':isB}">CSDN</h2>
+        <hr>
+        <div v-if="isLogin">你好</div>
+        <div v-else>请登录</div>
+
+
+        <div v-if="type === 1">A</div>
+        <div v-else-if="type === 2">B</div>
+        <div v-else>C</div>
+
+        <hr>
+        <div v-show="isShow">你好呀</div>
+        <hr>
+        <h2>{{count}}</h2>
+        <!-- 方式1：不传参 -->
+        <button v-on:click="add">click</button>
+        <!-- 方式2：传参，通过$event,在下面定义函数接收的时候名字无所谓，e或者event都可 -->
+        <button v-on:click="add2($event)">click2</button>
+        <!-- .prevent 修饰符 -->
+        <a @click.prevent="fn()" href="htttp://www.baidu.com" >跳转到百度</a>
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el: "#app",
+            data: {
+                msg: "<span>你好 Vue</span>",
+                classA: "a",
+                isA: true,
+                isB: true,
+                count: 1,
+                isOk: true,
+                isLogin: false,
+                type: 3,
+                isShow: true,
+                count:0
+            },
+            methods: {
+                // 方式1：必须是event
+                add(event) {
+                    console.log(event.target);//事件源
+                    this.count++;
+                },
+                add2(e) {
+                    console.log(e.target);
+                    this.count++;
+                },
+                fn(){
+                    console.log('点击跳转');
+                }
+            }
+        })
+        console.log(vm.msg);
+        console.log(vm.$el);
+        console.log(vm.$data);
+
+    </script>
+</body>
+</html>
